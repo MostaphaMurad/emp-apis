@@ -25,8 +25,8 @@ public class EmployeeController {
         return "ok";
     }
     @GetMapping(value = "/emps",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Employee>>getEmployees(@RequestHeader("Accept-Language")String lang){
-        System.out.println(lang);
+    public ResponseEntity<List<Employee>>getEmployees() throws InterruptedException {
+      //  System.out.println(lang);
         return new ResponseEntity<>(employeeServicesImp.getEmployees(), OK);
     }
     @PostMapping("/save")

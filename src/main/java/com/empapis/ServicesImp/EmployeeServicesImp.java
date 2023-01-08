@@ -4,6 +4,8 @@ import com.empapis.Models.Employee;
 import com.empapis.Repository.EmpRepository;
 import com.empapis.Services.EmployeeServices;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +14,9 @@ import java.util.List;
 public class EmployeeServicesImp implements EmployeeServices {
     private final EmpRepository empRepository;
     @Override
-    public List<Employee> getEmployees() {
+    @Cacheable("emps")
+    public List<Employee> getEmployees() throws InterruptedException {
+        Thread.sleep(2000);
         return empRepository.findAll();
     }
     @Override
@@ -21,6 +25,7 @@ public class EmployeeServicesImp implements EmployeeServices {
     }
 
     @Override
+    @CacheEvict(value = "emps",allEntries = true)//used to pass event to cacheable method to notify it that we have an update
     public Employee saveEmployee(Employee employee) {
         return empRepository.save(employee);
     }
